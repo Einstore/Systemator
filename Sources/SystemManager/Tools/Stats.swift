@@ -13,7 +13,7 @@ public struct Stats: Codable {
     public struct Mac: Command {
         
         public static var command: String {
-            return "top -l 1 -n 30 ; vm_stat ; sysctl hw.memsize ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
+            return "top -l 1 -n 30 ; vm_stat ; sysctl hw.memsize ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10 ; echo '!Hdd stats:' ; \(Hdd.Mac.command)"
         }
         
         public static func parse(_ string: String) -> Stats {
@@ -30,6 +30,10 @@ public struct Stats: Codable {
             
             let memTotal = sz(value: string.line(with: "hw.memsize:")?.intOnly() ?? 0)
             let memFree = sz(value: string.line(with: "Pages free:")?.intOnly() ?? 0)
+            
+            let df = string.drop(till: "!Hdd stats:").trimmingCharacters(in: .whitespacesAndNewlines)
+            let hdds = Hdd.Mac.parse(df)
+            
             return Stats(
                 cpu: Stats.CPU(
                     user: cpuUser,
@@ -41,7 +45,8 @@ public struct Stats: Codable {
                     free: memFree,
                     used: (memTotal - memFree)
                 ),
-                processes: []
+                processes: [],
+                hdd: hdds
             )
         }
         
@@ -50,7 +55,7 @@ public struct Stats: Codable {
     public struct Linux: Command {
         
         public static var command: String {
-            return "top -b -n1 ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
+            return "top -b -n1 ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10 ; echo '!Hdd stats:' ; \(Hdd.Linux.command)"
         }
         
         public static func parse(_ string: String) -> Stats {
@@ -65,6 +70,10 @@ public struct Stats: Codable {
             let memTotal = memComponents?.find(andTrim: " total")?.intOnly() ?? 0
             let memFree = memComponents?.find(andTrim: " free")?.intOnly() ?? 0
             let memUsed = memComponents?.find(andTrim: " used")?.intOnly() ?? 0
+            
+            let df = string.drop(till: "!Hdd stats:").trimmingCharacters(in: .whitespacesAndNewlines)
+            let hdds = Hdd.Linux.parse(df)
+            
             return Stats(
                 cpu: Stats.CPU(
                     user: cpuUser,
@@ -76,7 +85,8 @@ public struct Stats: Codable {
                     free: (memFree * 1024),
                     used: (memUsed * 1024)
                 ),
-                processes: []
+                processes: [],
+                hdd: hdds
             )
         }
         
@@ -117,5 +127,7 @@ public struct Stats: Codable {
     public let memory: Memory
     
     public let processes: [Process]
+    
+    public let hdd: [Hdd]
     
 }
