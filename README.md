@@ -10,7 +10,7 @@ Systemator is made of three separate components
 - [x] a higher level `SystemController` which is built on the top of Vapor framework and gives you two ready to go endpoints
 - [x] a launchable app called `Run` which will launch a full Vapor app and makes it's API's available
 
-### Run whole monitoring
+### Run whole monitoring app on it's own!
 
 * Compile `Systemator` and run!
 * Default address is `http://127.0.0.1:8080`
