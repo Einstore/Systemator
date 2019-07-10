@@ -45,17 +45,36 @@ The output should look somehow like this:
         "logicalCpu": 8
     },
     "usage": {
-        "cpu": {
-            "system": 14.18,
-            "user": 7.9299999999999997,
-            "idle": 77.879999999999995
-        },
-        "processes": [],
+        "hdd": [
+            {
+                "size": 1000240963584,
+                "use": 3,
+                "filesystem": "/dev/disk1s1",
+                "mounted": "/",
+                "available": 442482974720,
+                "used": 10488909824
+            },
+            ...
+            {
+                "size": 1000240963584,
+                "use": 55,
+                "filesystem": "/dev/disk1s5",
+                "mounted": "/System/Volumes/Data",
+                "available": 442482974720,
+                "used": 540546445312
+            }
+        ],
         "memory": {
             "total": 67108864,
-            "free": 95,
-            "used": 67108769
-        }
+            "free": 103,
+            "used": 67108761
+        },
+        "cpu": {
+            "system": 19.670000000000002,
+            "user": 22.420000000000002,
+            "idle": 57.890000000000001
+        },
+        "processes": []
     }
 }
 ```
