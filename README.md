@@ -8,7 +8,7 @@ Systemator is made of three separate components
 
 - [x] a lower level code API which will allow you to integrate monitoring to any of your `NIO` apps called `SystemManager`
 - [x] a higher level `SystemController` which is built on the top of Vapor framework and gives you two ready to go endpoints
-- [x] a launchable app called `Run` which will launch a full Vapor app and makes it's API's available
+- [x] a launchable app called `Systemator` which will launch a full Vapor app and makes it's API's available
 
 ### Run whole monitoring app on it's own!
 
