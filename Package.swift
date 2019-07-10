@@ -7,7 +7,7 @@ let package = Package(
         .macOS(.v10_13)
     ],
     products: [
-        .executable(name: "Systemator", targets: ["Systemator"]),
+        .executable(name: "systemator", targets: ["Systemator"]),
         .library(name: "SystemController", targets: ["SystemController"]),
         .library(name: "SystemManager", targets: ["SystemManager"])
     ],
