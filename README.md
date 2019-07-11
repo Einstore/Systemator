@@ -12,7 +12,14 @@ Systemator is made of three separate components
 
 ### Run whole monitoring app on it's own!
 
-* Compile `Systemator` and run!
+```bash
+brew tap einstore/homebrew-tap
+brew install systemator
+```
+
+or ...
+
+* Compile `Systemator` in *Xcode* and run!
 * Default address is `http://127.0.0.1:8080`
 
 ### Integrate endpoints in an Vapor 4 app
