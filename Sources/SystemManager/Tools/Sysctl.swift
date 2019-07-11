@@ -73,10 +73,12 @@ public class Sysctl: Command {
         case hw_optional_avx512vbmi = "hw.optional.avx512vbmi" // 0
         case hw_targettype = "hw.targettype" // Mac
         case hw_cputhreadtype = "hw.cputhreadtype" // 1
+        case machdep_cpu_brand_string = "machdep.cpu.brand_string" // Intel(R) Core(TM) i5-5257U CPU @ 2.70GHz
+        case machdep_cpu_vendor = "machdep.cpu.vendor" // GenuineIntel
     }
     
     public static var command: String {
-        return "sysctl hw"
+        return "sysctl -a"
     }
     
     public static func parse(_ string: String) -> [Value: String] {

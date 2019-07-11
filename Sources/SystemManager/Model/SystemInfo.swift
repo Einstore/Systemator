@@ -11,9 +11,12 @@ import Foundation
 public struct SystemInfo: Codable {
     
     public struct CPU: Codable {
-        let physicalCpu: Int
-        let logicalCpu: Int?
-        let clock: Double
+        public let model: String
+        public let vendor: String
+        public let hypervisor: String?
+        public let cores: Int
+        public let logicalCpu: Int?
+        public let clock: Double
     }
     
     /// Number of cores

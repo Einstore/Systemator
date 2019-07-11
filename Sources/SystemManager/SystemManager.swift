@@ -36,15 +36,25 @@ public class SystemManager {
             return self.shell.run(bash: Sysctl.command).map { output in
                 let info = Sysctl.parse(output)
                 return SystemInfo.CPU(
-                    physicalCpu: info.int(for: .hw_physicalcpu),
+                    model: info.string(for: .machdep_cpu_brand_string),
+                    vendor: info.string(for: .machdep_cpu_vendor),
+                    hypervisor: nil,
+                    cores: info.int(for: .hw_physicalcpu),
                     logicalCpu: info.int(for: .hw_logicalcpu),
                     clock: info.double(for: .hw_cpufrequency)
                 )
             }
         case .linux:
-            return self.shell.run(bash: Cpuinfo.command).map { output in
-                let cpu = Cpuinfo.parse(output)
-                return cpu
+            return self.shell.run(bash: Lscpu.command).map { output in
+                let cpu = Lscpu.parse(output)
+                return SystemInfo.CPU(
+                    model: cpu.model,
+                    vendor:  cpu.vendor,
+                    hypervisor: cpu.hypervisor,
+                    cores: cpu.cores,
+                    logicalCpu: nil,
+                    clock: cpu.clock
+                )
             }
         default:
             return eventLoop.makeFailedFuture(Error.unableToProvideInformation)
@@ -87,7 +97,10 @@ public class SystemManager {
                 let info = Sysctl.parse(output)
                 return SystemInfo(
                     cpu: SystemInfo.CPU(
-                        physicalCpu: info.int(for: .hw_physicalcpu),
+                        model: info.string(for: .machdep_cpu_brand_string),
+                        vendor: info.string(for: .machdep_cpu_vendor),
+                        hypervisor: nil,
+                        cores: info.int(for: .hw_physicalcpu),
                         logicalCpu: info.int(for: .hw_logicalcpu),
                         clock: info.double(for: .hw_cpufrequency)
                     ),
@@ -99,10 +112,17 @@ public class SystemManager {
     
     public func linuxInfo() -> EventLoopFuture<SystemInfo> {
         return stats(os: .linux).flatMap { stats in
-            return self.shell.run(bash: Cpuinfo.command).map { output in
-                let cpu = Cpuinfo.parse(output)
+            return self.shell.run(bash: Lscpu.command).map { output in
+                let cpu = Lscpu.parse(output)
                 return SystemInfo(
-                    cpu: cpu,
+                    cpu: SystemInfo.CPU(
+                        model: cpu.model,
+                        vendor:  cpu.vendor,
+                        hypervisor: cpu.hypervisor,
+                        cores: cpu.cores,
+                        logicalCpu: nil,
+                        clock: cpu.clock
+                    ),
                     usage: stats
                 )
             }

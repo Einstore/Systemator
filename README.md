@@ -41,7 +41,7 @@ The output should look somehow like this:
 {
     "cpu": {
         "clock": 2900000000,
-        "physicalCpu": 4,
+        "cores": 4,
         "logicalCpu": 8
     },
     "usage": {
