@@ -13,7 +13,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0-alpha.1.5"),
-        .package(url: "https://github.com/Einstore/ShellKit.git", from: "1.0.0")
+        .package(url: "https://github.com/Einstore/ShellKit.git", from: "1.0.0"),
+        .package(url: "https://github.com/Bouke/NetService.git", from: "0.6.0")
     ],
     targets: [
         .target(
