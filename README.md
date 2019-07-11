@@ -21,7 +21,7 @@ systemator
 To define a custom port or host do
 
 ``` bash
-systemator  --hostname 0.0.0.0 --port 12345
+systemator --hostname 0.0.0.0 --port 12345
 ```
 
 or ...
