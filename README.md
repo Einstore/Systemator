@@ -15,6 +15,13 @@ Systemator is made of three separate components
 ```bash
 brew tap einstore/homebrew-tap
 brew install systemator
+systemator
+```
+
+To define a custom port or host do
+
+``` bash
+systemator  --hostname 0.0.0.0 --port 12345
 ```
 
 or ...
