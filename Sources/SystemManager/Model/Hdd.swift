@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SystemModel
 
 
-public struct Hdd: Codable {
+extension SystemInfo.Stats.Hdd {
     
     public struct Mac: Codable {
         
@@ -16,19 +17,19 @@ public struct Hdd: Codable {
             return "df -P"
         }
         
-        public static func parse(_ string: String) -> [Hdd] {
+        public static func parse(_ string: String) -> [SystemInfo.Stats.Hdd] {
             let blocks = string.line(with: "Mounted on")?.doubleOnly() ?? 512.0
             let string = string.dropLine(with: "Mounted on")
             let lines = string.lines()
             
-            var hdds: [Hdd] = []
+            var hdds: [SystemInfo.Stats.Hdd] = []
             lines.forEach { line in
                 let parts = line.splitIntoTrimmedComponents(" ")
                 guard parts.count == 6 else {
                     return
                 }
                 hdds.append(
-                    Hdd(
+                    SystemInfo.Stats.Hdd(
                         filesystem: parts[0],
                         size: (parts[1].doubleOnly() * blocks),
                         used: (parts[2].doubleOnly() * blocks),
@@ -49,19 +50,19 @@ public struct Hdd: Codable {
             return "df -B 1024"
         }
         
-        public static func parse(_ string: String) -> [Hdd] {
+        public static func parse(_ string: String) -> [SystemInfo.Stats.Hdd] {
             let blocks = 1024.0
             let string = string.dropLine(with: "Mounted on")
             let lines = string.lines()
             
-            var hdds: [Hdd] = []
+            var hdds: [SystemInfo.Stats.Hdd] = []
             lines.forEach { line in
                 let parts = line.splitIntoTrimmedComponents(" ")
                 guard parts.count == 6 else {
                     return
                 }
                 hdds.append(
-                    Hdd(
+                    SystemInfo.Stats.Hdd(
                         filesystem: parts[0],
                         size: (parts[1].doubleOnly() * blocks),
                         used: (parts[2].doubleOnly() * blocks),
@@ -75,13 +76,6 @@ public struct Hdd: Codable {
         }
         
     }
-    
-    public let filesystem: String
-    public let size: Double
-    public let used: Double
-    public let available: Double
-    public let use: Double
-    public let mounted: String
     
 }
 

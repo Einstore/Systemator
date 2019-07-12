@@ -6,6 +6,7 @@
 //
 
 import ShellKit
+import SystemModel
 
 
 public class SystemManager {
@@ -61,16 +62,16 @@ public class SystemManager {
         }
     }
     
-    public func stats(os: Os) -> EventLoopFuture<Stats> {
+    public func stats(os: Os) -> EventLoopFuture<SystemInfo.Stats> {
         switch os {
         case .macOs:
-            return self.shell.run(bash: Stats.Mac.command).map { output in
-                let top = Stats.Mac.parse(output)
+            return self.shell.run(bash: SystemInfo.Stats.Mac.command).map { output in
+                let top = SystemInfo.Stats.Mac.parse(output)
                 return top
             }
         case .linux:
-            return self.shell.run(bash: Stats.Linux.command).map { output in
-                let top = Stats.Linux.parse(output)
+            return self.shell.run(bash: SystemInfo.Stats.Linux.command).map { output in
+                let top = SystemInfo.Stats.Linux.parse(output)
                 return top
             }
         default:

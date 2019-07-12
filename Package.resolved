@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "async-http-client",
+        "repositoryURL": "https://github.com/swift-server/async-http-client.git",
+        "state": {
+          "branch": null,
+          "revision": "a42fe83781b5c4822e00706eaf6a4380b256be8a",
+          "version": "1.0.0-alpha.1"
+        }
+      },
+      {
         "package": "async-kit",
         "repositoryURL": "https://github.com/vapor/async-kit.git",
         "state": {

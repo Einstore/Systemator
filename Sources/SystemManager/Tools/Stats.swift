@@ -6,17 +6,18 @@
 //
 
 import Foundation
+import SystemModel
 
 
-public struct Stats: Codable {
+extension SystemInfo.Stats {
     
     public struct Mac: Command {
         
         public static var command: String {
-            return "top -l 1 -n 30 ; vm_stat ; sysctl hw.memsize ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10 ; echo '!Hdd stats:' ; \(Hdd.Mac.command)"
+            return "top -l 1 -n 30 ; vm_stat ; sysctl hw.memsize ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10 ; echo '!Hdd stats:' ; \(SystemInfo.Stats.Hdd.Mac.command)"
         }
         
-        public static func parse(_ string: String) -> Stats {
+        public static func parse(_ string: String) -> SystemInfo.Stats {
             let cpuLine = string.line(with: "CPU usage:")?.dropTillFirstColon()
             let cpuComponents = cpuLine?.splitIntoTrimmedComponents()
             let cpuUser = Double(cpuComponents?.find(andTrim: "% user") ?? "0.0") ?? 0.0
@@ -32,15 +33,15 @@ public struct Stats: Codable {
             let memFree = sz(value: string.line(with: "Pages free:")?.intOnly() ?? 0)
             
             let df = string.drop(till: "!Hdd stats:").trimmingCharacters(in: .whitespacesAndNewlines)
-            let hdds = Hdd.Mac.parse(df)
+            let hdds = SystemInfo.Stats.Hdd.Mac.parse(df)
             
-            return Stats(
-                cpu: Stats.CPU(
+            return SystemInfo.Stats(
+                cpu: SystemInfo.Stats.CPU(
                     user: cpuUser,
                     system: cpuSystem,
                     idle: cpuIdle
                 ),
-                memory: Stats.Memory(
+                memory: SystemInfo.Stats.Memory(
                     total: memTotal,
                     free: memFree,
                     used: (memTotal - memFree)
@@ -55,10 +56,10 @@ public struct Stats: Codable {
     public struct Linux: Command {
         
         public static var command: String {
-            return "top -b -n1 ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10 ; echo '!Hdd stats:' ; \(Hdd.Linux.command)"
+            return "top -b -n1 ; echo '!Processor stats:' ; ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10 ; echo '!Hdd stats:' ; \(SystemInfo.Stats.Hdd.Linux.command)"
         }
         
-        public static func parse(_ string: String) -> Stats {
+        public static func parse(_ string: String) -> SystemInfo.Stats {
             let cpuLine = string.line(with: "%Cpu(s):")?.dropTillFirstColon()
             let cpuComponents = cpuLine?.splitIntoTrimmedComponents()
             let cpuUser = Double(cpuComponents?.find(andTrim: " us") ?? "0.0") ?? 0.0
@@ -72,15 +73,15 @@ public struct Stats: Codable {
             let memUsed = memComponents?.find(andTrim: " used")?.intOnly() ?? 0
             
             let df = string.drop(till: "!Hdd stats:").trimmingCharacters(in: .whitespacesAndNewlines)
-            let hdds = Hdd.Linux.parse(df)
+            let hdds = SystemInfo.Stats.Hdd.Linux.parse(df)
             
-            return Stats(
-                cpu: Stats.CPU(
+            return SystemInfo.Stats(
+                cpu: SystemInfo.Stats.CPU(
                     user: cpuUser,
                     system: cpuSystem,
                     idle: cpuIdle
                 ),
-                memory: Stats.Memory(
+                memory: SystemInfo.Stats.Memory(
                     total: (memTotal * 1024),
                     free: (memFree * 1024),
                     used: (memUsed * 1024)
@@ -121,13 +122,5 @@ public struct Stats: Codable {
         public let args: String
         
     }
-    
-    public let cpu: CPU
-    
-    public let memory: Memory
-    
-    public let processes: [Process]
-    
-    public let hdd: [Hdd]
     
 }
