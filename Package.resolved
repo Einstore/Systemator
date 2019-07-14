@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/Einstore/ShellKit.git",
         "state": {
           "branch": null,
-          "revision": "0e7e238feeac519211881afa66bfd75add84825c",
-          "version": "1.0.0"
+          "revision": "e0a36d3d1622de65f9572130e0824e57c9241273",
+          "version": "1.1.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "7f20464df31e85f86bedf4a8afdd1785e0cb5059",
-          "version": "2.3.0"
+          "revision": "334815f6580b5256409d48431751938c4e966e72",
+          "version": "2.4.0"
         }
       },
       {

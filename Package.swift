@@ -40,7 +40,7 @@ let package = Package(
         .target(
             name: "SystemManager",
             dependencies: [
-                "ShellKit",
+                "CommandKit",
                 "SystemModel"
             ]
         ),

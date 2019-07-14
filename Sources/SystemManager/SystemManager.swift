@@ -5,7 +5,7 @@
 //  Created by Ondrej Rafaj on 09/07/2019.
 //
 
-import ShellKit
+import CommandKit
 import SystemModel
 
 
@@ -25,13 +25,7 @@ public class SystemManager {
         shell = try Shell(conn, on: eventLoop)
     }
     
-    public func os() -> EventLoopFuture<Os> {
-        return shell.run(bash: Os.command).map { output in
-            return Os.parse(output)
-        }
-    }
-    
-    public func cores(os: Os) -> EventLoopFuture<SystemInfo.CPU> {
+    public func cores(os: Cmd.Os) -> EventLoopFuture<SystemInfo.CPU> {
         switch os {
         case .macOs:
             return self.shell.run(bash: Sysctl.command).map { output in
@@ -62,7 +56,7 @@ public class SystemManager {
         }
     }
     
-    public func stats(os: Os) -> EventLoopFuture<SystemInfo.Stats> {
+    public func stats(os: Cmd.Os) -> EventLoopFuture<SystemInfo.Stats> {
         switch os {
         case .macOs:
             return self.shell.run(bash: SystemInfo.Stats.Mac.command).map { output in
@@ -80,7 +74,7 @@ public class SystemManager {
     }
     
     public func info() -> EventLoopFuture<SystemInfo> {
-        return os().flatMap { os in
+        return shell.cmd.os().flatMap { os in
             switch os {
             case .macOs:
                 return self.macOsInfo()
