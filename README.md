@@ -27,7 +27,7 @@ systemator --hostname 0.0.0.0 --port 12345
 or ...
 
 * Compile `Systemator` in *Xcode* and run!
-* Default address is `http://127.0.0.1:8080`
+* Default address is `http://127.0.0.1:8080/info`
 
 ### Integrate endpoints in an Vapor 4 app
 
