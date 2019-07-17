@@ -28,7 +28,7 @@ public class SystemManager {
     public func cores(os: Cmd.Os) -> EventLoopFuture<SystemInfo.CPU> {
         switch os {
         case .macOs:
-            return self.shell.run(bash: Sysctl.command).map { output in
+            return self.shell.run(bash: Sysctl.command).future.map { output in
                 let info = Sysctl.parse(output)
                 return SystemInfo.CPU(
                     model: info.string(for: .machdep_cpu_brand_string),
@@ -40,7 +40,7 @@ public class SystemManager {
                 )
             }
         case .linux:
-            return self.shell.run(bash: Lscpu.command).map { output in
+            return self.shell.run(bash: Lscpu.command).future.map { output in
                 let cpu = Lscpu.parse(output)
                 return SystemInfo.CPU(
                     model: cpu.model,
@@ -59,12 +59,12 @@ public class SystemManager {
     public func stats(os: Cmd.Os) -> EventLoopFuture<SystemInfo.Stats> {
         switch os {
         case .macOs:
-            return self.shell.run(bash: SystemInfo.Stats.Mac.command).map { output in
+            return self.shell.run(bash: SystemInfo.Stats.Mac.command).future.map { output in
                 let top = SystemInfo.Stats.Mac.parse(output)
                 return top
             }
         case .linux:
-            return self.shell.run(bash: SystemInfo.Stats.Linux.command).map { output in
+            return self.shell.run(bash: SystemInfo.Stats.Linux.command).future.map { output in
                 let top = SystemInfo.Stats.Linux.parse(output)
                 return top
             }
@@ -88,7 +88,7 @@ public class SystemManager {
     
     public func macOsInfo() -> EventLoopFuture<SystemInfo> {
         return stats(os: .macOs).flatMap { stats in
-            return self.shell.run(bash: Sysctl.command).map { output in
+            return self.shell.run(bash: Sysctl.command).future.map { output in
                 let info = Sysctl.parse(output)
                 return SystemInfo(
                     cpu: SystemInfo.CPU(
@@ -107,7 +107,7 @@ public class SystemManager {
     
     public func linuxInfo() -> EventLoopFuture<SystemInfo> {
         return stats(os: .linux).flatMap { stats in
-            return self.shell.run(bash: Lscpu.command).map { output in
+            return self.shell.run(bash: Lscpu.command).future.map { output in
                 let cpu = Lscpu.parse(output)
                 return SystemInfo(
                     cpu: SystemInfo.CPU(

@@ -20,7 +20,7 @@ extension SystemInfo.Stats.Hdd {
         public static func parse(_ string: String) -> [SystemInfo.Stats.Hdd] {
             let blocks = string.line(with: "Mounted on")?.doubleOnly() ?? 512.0
             let string = string.dropLine(with: "Mounted on")
-            let lines = string.lines()
+            let lines = string.lines
             
             var hdds: [SystemInfo.Stats.Hdd] = []
             lines.forEach { line in
@@ -53,7 +53,7 @@ extension SystemInfo.Stats.Hdd {
         public static func parse(_ string: String) -> [SystemInfo.Stats.Hdd] {
             let blocks = 1024.0
             let string = string.dropLine(with: "Mounted on")
-            let lines = string.lines()
+            let lines = string.lines
             
             var hdds: [SystemInfo.Stats.Hdd] = []
             lines.forEach { line in
